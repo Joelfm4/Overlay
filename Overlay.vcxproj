@@ -26,6 +26,7 @@
     <ClCompile Include="External Dependencies\imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="External Dependencies\imgui\imgui_tables.cpp" />
     <ClCompile Include="External Dependencies\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Source\Game.cpp" />
     <ClCompile Include="Source\Game.h" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Render\Features.cpp" />
