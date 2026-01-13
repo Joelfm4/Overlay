@@ -62,9 +62,10 @@ void Game::Run() {
 		// ############################
 
 
-		ViewThread.join();
-
 	}
+
+
+	ViewThread.join();
 
 
 }
