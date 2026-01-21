@@ -15,6 +15,7 @@ void Game::Run() {
 	/* Instances */
 	RenderQueue renderQueue;
 	Overlay overlay(instance, prevInstance, cmdLine, showCmd);
+	Menu menu;
 
 
 	std::atomic<bool> running { true };
@@ -33,6 +34,9 @@ void Game::Run() {
 
 	std::vector<Object> objects;
 
+	bool showMenu = false;
+
+
 	while (running) {
 
 		MSG msg;
@@ -47,8 +51,10 @@ void Game::Run() {
 
 		}
 
-		if (!running)
-			break;
+
+		if (!running) break;
+
+		if (GetAsyncKeyState(VK_INSERT) & 1) showMenu = !showMenu;
 
 
 		// ############################ Render
@@ -56,7 +62,18 @@ void Game::Run() {
 		objects = renderQueue.GetAndClear();
 
 		overlay.BeginFrame();
+
+		if (showMenu) {
+
+			menu.Display();
+
+			overlay.SetClickThrough(true);
+
+		} else overlay.SetClickThrough(false);
+
+
 		overlay.DrawObjects(objects);
+
 		overlay.EndFrame();
 
 		// ############################

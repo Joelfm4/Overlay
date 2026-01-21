@@ -54,6 +54,9 @@
     <ClCompile Include="Source\Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Menu\Menu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External Dependencies\imgui\imconfig.h">
@@ -87,6 +90,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Render\RenderQueue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Menu\Menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

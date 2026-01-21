@@ -7,27 +7,34 @@ void Visual::Run() {
 
 	while (running) {
 
+
+		// -------------------------------------------------------------------- //
+		//                                  ESP                                 //
+		// -------------------------------------------------------------------- //
+
 		viewObjects.clear();
 
-		for (std::size_t i = 0; i < 10; ++i) {
 
-			for (std::size_t j = 0; j < 10; ++j) {
-
-				viewObjects.push_back(Circle{
-					.color = ImColor(0.80f, 0.52f, 0.25f, 1.0f),
-					.center = {50.f * i, 50.f * j},
-					.radius = 20.f,
-					});
-
+		viewObjects.push_back(Rect{
+				.color = ImColor(0.15f, 0.81f, 0.95f, 1.0f),
+				.min = {500.f, 500.f},
+				.max = {650.f, 750.f},
 			}
+		);
 
-		}
+		viewObjects.push_back(Text{
+				.color = ImColor(0.15f, 0.81f, 0.95f, 1.0f),
+				.pos = { 551.f, 485.f},
+				.text = "Joelfm4",
+			}
+		);
+
 
 		renderQueue.PushObjects(viewObjects);
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(10));
-
 	}
 
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
 }

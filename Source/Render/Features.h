@@ -19,6 +19,7 @@ public:
 
 private:
 
+	/* Variables */
     std::atomic<bool>& running;
     RenderQueue& renderQueue;
 

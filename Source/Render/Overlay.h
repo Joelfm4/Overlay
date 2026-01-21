@@ -37,6 +37,8 @@ public:
 	void DrawObjects(const std::vector<Object>& objects);
 	void EndFrame();
 
+	void SetClickThrough(bool enabled);
+
 
 private:
 
@@ -47,6 +49,7 @@ private:
 
 private:
 
+	/* Variables */
 	HINSTANCE instance;
 	HINSTANCE prevInstance;
 	PSTR cmdLine;
@@ -55,7 +58,7 @@ private:
 	WNDCLASSEXW wc{};
 	HWND window;
 
-	// DirectX Variables
+	// DirectX
 	ID3D11Device* device { nullptr };
 	D3D_FEATURE_LEVEL level {};
 	ID3D11Texture2D* backBuffer { nullptr };

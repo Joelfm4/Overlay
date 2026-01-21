@@ -13,34 +13,34 @@ public:
 
     void PushObject(const Object& object) {
 
-        std::lock_guard<std::mutex> lock(mutex_);
-        writeBuffer_.push_back(object);
+        std::lock_guard<std::mutex> lock(mutex);
+        writeBuffer.push_back(object);
 
     }
 
     void PushObjects(const std::vector<Object>& objects) {
 
-        std::lock_guard<std::mutex> lock(mutex_);
-        writeBuffer_.insert(writeBuffer_.end(), objects.begin(), objects.end());
+        std::lock_guard<std::mutex> lock(mutex);
+        writeBuffer.insert(writeBuffer.end(), objects.begin(), objects.end());
     
     }
 
     std::vector<Object> GetAndClear() {
 
-        std::lock_guard<std::mutex> lock(mutex_);
+        std::lock_guard<std::mutex> lock(mutex);
 
-        readBuffer_.clear();
-        swap(writeBuffer_, readBuffer_);
+        readBuffer.clear();
+        swap(writeBuffer, readBuffer);
 
-        return readBuffer_;
+        return readBuffer;
 
     }
 
 
 
 private:
-	std::mutex mutex_;
-    std::vector<Object> writeBuffer_;
-    std::vector<Object> readBuffer_;
+	std::mutex mutex;
+    std::vector<Object> writeBuffer;
+    std::vector<Object> readBuffer;
 
 };

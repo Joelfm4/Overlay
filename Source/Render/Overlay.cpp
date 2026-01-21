@@ -111,6 +111,12 @@ void Overlay::DrawObjects(const std::vector<Object>& objects) {
 				else if constexpr (std::is_same_v<T, Rect>)
 					drawList->AddRect(arg.min, arg.max, arg.color);
 
+				else if constexpr (std::is_same_v<T, RectFilled>)
+					drawList->AddRectFilled(arg.min, arg.max, arg.color);
+
+				else if constexpr (std::is_same_v<T, Text>)
+					drawList->AddText(arg.pos, arg.color, arg.text);
+
 			}, object
 		);
 
@@ -129,7 +135,18 @@ void Overlay::EndFrame() {
 
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 		
-		swapChain->Present(1U, 0U);
+		swapChain->Present(1U, DXGI_PRESENT_DO_NOT_WAIT);
+
+}
+
+
+void Overlay::SetClickThrough(bool enabled) {
+
+	if (enabled)
+		SetWindowLong(window, GWL_EXSTYLE, WS_EX_TOPMOST | WS_EX_LAYERED | WS_EX_TOOLWINDOW);
+
+	else
+		SetWindowLong(window, GWL_EXSTYLE, WS_EX_TOPMOST | WS_EX_TRANSPARENT | WS_EX_LAYERED | WS_EX_TOOLWINDOW);
 
 }
 
@@ -223,7 +240,7 @@ void Overlay::InitializeGraphics() {
 
 	// Set up DirectX 11
 	DXGI_SWAP_CHAIN_DESC sd {};
-	sd.BufferDesc.RefreshRate.Numerator = 60U;
+	sd.BufferDesc.RefreshRate.Numerator = 180U; // TODO: Match monitor
 	sd.BufferDesc.RefreshRate.Denominator = 1U;
 	sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	sd.SampleDesc.Count = 1U;

@@ -29,6 +29,7 @@
     <ClCompile Include="Source\Game.cpp" />
     <ClCompile Include="Source\Game.h" />
     <ClCompile Include="Source\Main.cpp" />
+    <ClCompile Include="Source\Menu\Menu.cpp" />
     <ClCompile Include="Source\Render\Features.cpp" />
     <ClCompile Include="Source\Render\Features.h" />
     <ClCompile Include="Source\Render\Overlay.cpp" />
@@ -42,6 +43,7 @@
     <ClInclude Include="External Dependencies\imgui\imstb_rectpack.h" />
     <ClInclude Include="External Dependencies\imgui\imstb_textedit.h" />
     <ClInclude Include="External Dependencies\imgui\imstb_truetype.h" />
+    <ClInclude Include="Source\Menu\Menu.h" />
     <ClInclude Include="Source\Render\Object.h" />
     <ClInclude Include="Source\Render\Overlay.h" />
     <ClInclude Include="Source\Render\RenderQueue.h" />

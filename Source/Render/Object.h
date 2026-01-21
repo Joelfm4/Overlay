@@ -28,6 +28,7 @@ struct Line {
 
 }; // Total = 48 bytes
 
+
 struct Rect {
 
 	ImColor color;
@@ -39,5 +40,24 @@ struct Rect {
 }; // Total = 32 bytes
 
 
+struct RectFilled {
 
-using Object = std::variant<Circle, Line, Rect>;
+	ImColor color;
+
+	ImVec2 min;
+	ImVec2 max;
+
+}; // Total = 32 bytes
+
+
+struct Text {
+
+	ImColor color;
+
+	ImVec2 pos;
+	const char* text;
+	
+}; // Total = 32 bytes
+
+
+using Object = std::variant<Circle, Line, Rect, RectFilled, Text>;
