@@ -52,11 +52,7 @@ Overlay::Overlay(HINSTANCE instance, HINSTANCE prevInstance, PSTR cmdLine, INT s
 
 
 Overlay::~Overlay() {
-
-	ImGui_ImplDX11_Shutdown();
-	ImGui_ImplWin32_Shutdown();
-	ImGui::DestroyContext();
-
+	
 	// Release DirectX
 	if (this->swapChain) this->swapChain->Release();
 	if (this->deviceContext) this->deviceContext->Release();
@@ -240,7 +236,7 @@ void Overlay::InitializeGraphics() {
 
 	// Set up DirectX 11
 	DXGI_SWAP_CHAIN_DESC sd {};
-	sd.BufferDesc.RefreshRate.Numerator = 180U; // TODO: Match monitor
+	sd.BufferDesc.RefreshRate.Numerator = 60U;
 	sd.BufferDesc.RefreshRate.Denominator = 1U;
 	sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	sd.SampleDesc.Count = 1U;
