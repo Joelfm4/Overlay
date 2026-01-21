@@ -48,6 +48,9 @@
     <ClInclude Include="Source\Render\Overlay.h" />
     <ClInclude Include="Source\Render\RenderQueue.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
