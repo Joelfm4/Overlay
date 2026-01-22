@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <format>
 #include <string>
 #include <variant>
 #include <vector>
@@ -49,16 +50,15 @@ private:
 
 private:
 
-	/* Variables */
 	HINSTANCE instance;
 	HINSTANCE prevInstance;
 	PSTR cmdLine;
 	INT showCmd;
 
-	WNDCLASSEXW wc{};
+	WNDCLASSEXW wc {};
 	HWND window;
 
-	// DirectX
+	// DirectX Variables
 	ID3D11Device* device { nullptr };
 	D3D_FEATURE_LEVEL level {};
 	ID3D11Texture2D* backBuffer { nullptr };

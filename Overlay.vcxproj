@@ -33,6 +33,7 @@
     <ClCompile Include="Source\Render\Features.cpp" />
     <ClCompile Include="Source\Render\Features.h" />
     <ClCompile Include="Source\Render\Overlay.cpp" />
+    <ClCompile Include="Source\Render\RenderQueue.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External Dependencies\imgui\imconfig.h" />

@@ -52,7 +52,7 @@ Overlay::Overlay(HINSTANCE instance, HINSTANCE prevInstance, PSTR cmdLine, INT s
 
 
 Overlay::~Overlay() {
-	
+
 	// Release DirectX
 	if (this->swapChain) this->swapChain->Release();
 	if (this->deviceContext) this->deviceContext->Release();
@@ -102,7 +102,7 @@ void Overlay::DrawObjects(const std::vector<Object>& objects) {
 					drawList->AddCircle(arg.center, arg.radius, arg.color);
 
 				else if constexpr (std::is_same_v<T, Line>)
-					drawList->AddLine(arg.p1, arg.p1, arg.color, arg.thickness);
+					drawList->AddLine(arg.p1, arg.p2, arg.color, arg.thickness);
 
 				else if constexpr (std::is_same_v<T, Rect>)
 					drawList->AddRect(arg.min, arg.max, arg.color);
@@ -125,7 +125,6 @@ void Overlay::EndFrame() {
 
 		ImGui::Render();
 
-		// Target Color
 		deviceContext->OMSetRenderTargets(1U, &renderTargetView, nullptr);
 		deviceContext->ClearRenderTargetView(renderTargetView, color);
 
@@ -138,11 +137,14 @@ void Overlay::EndFrame() {
 
 void Overlay::SetClickThrough(bool enabled) {
 
-	if (enabled)
-		SetWindowLong(window, GWL_EXSTYLE, WS_EX_TOPMOST | WS_EX_LAYERED | WS_EX_TOOLWINDOW);
+	LONG exStyle = GetWindowLong(window, GWL_EXSTYLE);
 
-	else
-		SetWindowLong(window, GWL_EXSTYLE, WS_EX_TOPMOST | WS_EX_TRANSPARENT | WS_EX_LAYERED | WS_EX_TOOLWINDOW);
+	if (enabled) 
+		exStyle &= ~WS_EX_TRANSPARENT;
+	else 
+		exStyle |= WS_EX_TRANSPARENT;
+
+	SetWindowLong(window, GWL_EXSTYLE, exStyle);
 
 }
 
@@ -190,9 +192,16 @@ HWND Overlay::CreateOverlayWindow() {
 		nullptr
 	);
 
+	if (window == nullptr) {
+
+		MessageBoxA(nullptr, "Failed to create window handle", "Error", MB_ICONERROR);
+		exit(1);
+
+	}
+
 	if (SetLayeredWindowAttributes(window, RGB(0, 0, 0), BYTE(255), LWA_ALPHA) == 0) {
 
-		std::string error = "Failed to set layered attributes " + std::to_string(GetLastError());
+		std::string error = std::format("Failed to set layered attributes Error: {}", GetLastError());
 
 		MessageBoxA(nullptr, error.c_str(), "Error", MB_ICONERROR);
 		exit(1);
@@ -201,6 +210,7 @@ HWND Overlay::CreateOverlayWindow() {
 
 
 	return window;
+
 }
 
 
@@ -222,7 +232,7 @@ void Overlay::ExtendFrameIntoClientArea() {
 		windowArea.bottom,
 	};
 
-	if (DwmExtendFrameIntoClientArea(this->window, &margins) != S_OK) {
+	if (FAILED(DwmExtendFrameIntoClientArea(this->window, &margins))) {
 
 		MessageBoxA(nullptr, "Failed to extended the window frame into the client area", "Error", MB_ICONERROR);
 		exit(1);
@@ -236,8 +246,8 @@ void Overlay::InitializeGraphics() {
 
 	// Set up DirectX 11
 	DXGI_SWAP_CHAIN_DESC sd {};
-	sd.BufferDesc.RefreshRate.Numerator = 60U;
-	sd.BufferDesc.RefreshRate.Denominator = 1U;
+	sd.BufferDesc.RefreshRate.Numerator = 0U;
+	sd.BufferDesc.RefreshRate.Denominator = 0U;
 	sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	sd.SampleDesc.Count = 1U;
 	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
@@ -247,13 +257,12 @@ void Overlay::InitializeGraphics() {
 	sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 	sd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
-	// Features wanted
 	constexpr D3D_FEATURE_LEVEL levels[2]{
 		D3D_FEATURE_LEVEL_11_0,
 		D3D_FEATURE_LEVEL_10_0,
 	};
 
-	if (D3D11CreateDeviceAndSwapChain(
+	if (FAILED(D3D11CreateDeviceAndSwapChain(
 		nullptr,
 		D3D_DRIVER_TYPE_HARDWARE,
 		nullptr,
@@ -266,29 +275,28 @@ void Overlay::InitializeGraphics() {
 		&this->device,
 		&this->level,
 		&this->deviceContext
-	) != S_OK) {
+	))) {
 
-		MessageBoxA(nullptr, "Failed to create device and swap chain", "Error", MB_ICONERROR);
+		MessageBoxA(nullptr, "Failed to create device and swap chain", "Error", MB_ICONERROR | MB_OK | MB_SYSTEMMODAL);
 		exit(1);
 
 	}
 
 
 	// Render Target
-	this->swapChain->GetBuffer(0U, IID_PPV_ARGS(&backBuffer));
+	if (FAILED(this->swapChain->GetBuffer(0U, IID_PPV_ARGS(&this->backBuffer)))) {
 
-	if (this->backBuffer) {
-
-		this->device->CreateRenderTargetView(this->backBuffer, nullptr, &this->renderTargetView);
-		this->backBuffer->Release();
-
-	} else {
-
-		MessageBoxA(nullptr, "Failed to create render tartget view", "Error", MB_ICONERROR);
+		MessageBoxA(nullptr, "Failed to get back buffer", "Error", MB_ICONERROR);
 		exit(1);
 
 	}
 
+
+	if(FAILED(this->device->CreateRenderTargetView(this->backBuffer, nullptr, &this->renderTargetView))) {
+		MessageBoxA(nullptr, "Failed to create render target view", "Error", MB_ICONERROR);
+		exit(1);
+
+	} else this->backBuffer->Release();
 
 }
 

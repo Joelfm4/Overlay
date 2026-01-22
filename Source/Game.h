@@ -19,7 +19,6 @@ public:
 
 private:
 
-	/* Variables */
 	HINSTANCE instance;
 	HINSTANCE prevInstance;
 	PSTR cmdLine;

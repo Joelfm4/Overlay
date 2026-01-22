@@ -34,7 +34,7 @@ void Game::Run() {
 
 	std::vector<Object> objects;
 
-	bool showMenu = false;
+	bool showMenu { false };
 
 
 	while (running) {
@@ -78,6 +78,7 @@ void Game::Run() {
 
 		// ############################
 
+		std::this_thread::sleep_for(std::chrono::milliseconds(20));
 
 	}
 

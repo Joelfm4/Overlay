@@ -12,14 +12,13 @@ class Visual {
 
 public:
 
-	Visual(std::atomic<bool>& running, RenderQueue& renderQueue) : running(running), renderQueue(renderQueue) {}
+	Visual(std::atomic<bool>& running, RenderQueue& renderQueue);
 
 	void Run();
 
 
 private:
 
-	/* Variables */
     std::atomic<bool>& running;
     RenderQueue& renderQueue;
 

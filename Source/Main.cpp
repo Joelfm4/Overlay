@@ -1,9 +1,3 @@
-#include <atomic>
-#include <iostream>
-#include <thread>
-
-#include <Windows.h>
-
 #include "Game.h"
 
 
